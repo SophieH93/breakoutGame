@@ -1,9 +1,15 @@
 import "./App.css";
+import Breakout from "./Breakout";
 
 function App() {
   return (
     <div className="app">
-      <h1>HELLO</h1>
+      <Breakout
+        title={"Breakout"}
+        width={800}
+        height={640}
+        background={"#000"}
+      />
     </div>
   );
 }
