@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Phaser from "Phaser";
+import Phaser from "phaser";
 import GameScene from "./GameScene";
 
 function Breakout({ title, width, height, background }) {
@@ -19,7 +19,7 @@ function Breakout({ title, width, height, background }) {
         },
         backgroundColor: background,
         parent: "phaser-parent",
-        scene: GameScene,
+        scene: [GameScene],
       })
     );
     setPhaser(_phaser);
