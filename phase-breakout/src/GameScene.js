@@ -24,6 +24,7 @@ export default class GameScene extends Phaser.Scene {
     this.redBricks = this.createRedBricks();
 
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.createOpeningText();
   }
 
@@ -48,6 +49,11 @@ export default class GameScene extends Phaser.Scene {
     } else {
       if (!this.gameStarted) {
         this.player.body.setVelocityX(0);
+        if (this.cursors.left.isDown) {
+          this.player.body.setVelocityX(-350);
+        } else if (this.cursors.right.isDown) {
+          this.player.body.setVelocityX(350);
+        }
         if (this.cursors.space.isDown) {
           this.gameStarted = true;
           this.ball.setVelocityY(-200);
