@@ -50,7 +50,8 @@ export default class GameScene extends Phaser.Scene {
         this.player.body.setVelocityX(0);
         if (this.cursors.space.isDown) {
           this.gameStarted = true;
-          this.ball.setVelocityX(-200);
+          this.ball.setVelocityY(-200);
+          this.openingText.setVisible(false);
         }
       }
     }
