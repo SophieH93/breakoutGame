@@ -24,16 +24,54 @@ export default class GameScene extends Phaser.Scene {
     this.redBricks = this.createRedBricks();
 
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.player.setCollideWorldBounds(true);
     this.player.setImmovable(true);
 
-    // Makes the ball bounce
     this.ball.setCollideWorldBounds(true);
     this.ball.setBounce(1, 1);
-    // Makes the ball fall off the bottom
     this.physics.world.checkCollision.down = false;
 
+    this.physics.add.collider(
+      this.ball,
+      this.blueBricks,
+      this.hitBrick,
+      null,
+      this
+    );
+
+    this.physics.add.collider(
+      this.ball,
+      this.yellowBricks,
+      this.hitBrick,
+      null,
+      this
+    );
+
+    this.physics.add.collider(
+      this.ball,
+      this.redBricks,
+      this.hitBrick,
+      null,
+      this
+    );
+
+    this.physics.add.collider(this.ball, this.plaer, this.hitBrick, null, this);
+
     this.createOpeningText();
+  }
+
+  hitBrick(ball, brick) {
+    brick.disableBody(true, true);
+
+    if (ball.body.velocity.x === 0) {
+      let rand = Math.random();
+      if (rand >= 0.5) {
+        ball.body.setVelocityX(150);
+      } else {
+        ball.body.setVelocityX(-150);
+      }
+    }
   }
 
   createOpeningText() {
@@ -55,13 +93,40 @@ export default class GameScene extends Phaser.Scene {
     if (this.isGameOver(this.physics.world)) {
     } else if (this.isWon()) {
     } else {
+      this.player.body.setVelocityX(0);
+
+      if (this.cursors.left.isDown) {
+        this.player.body.setVelocityX(-350);
+      } else if (this.cursors.right.isDown) {
+        this.player.body.setVelocityX(350);
+      }
+
       if (!this.gameStarted) {
-        this.player.body.setVelocityX(0);
-        if (this.cursors.left.isDown) {
-          this.player.body.setVelocityX(-350);
-        } else if (this.cursors.right.isDown) {
-          this.player.body.setVelocityX(350);
+        this.ball.setX(this.player.x);
+        if (this.cursors.space.isDown) {
+          this.gameStarted = true;
+          this.ball.setVelocityY(-200);
+          this.openingText.setVisible(false);
         }
+      }
+    }
+  }
+
+  update() {
+    if (this.isGameOver(this.physics.world)) {
+    } else if (this.isWon()) {
+    } else {
+      this.player.body.setVelocityX(0);
+
+      if (this.cursors.left.isDown) {
+        this.player.body.setVelocityX(-350);
+      } else if (this.cursors.right.isDown) {
+        this.player.body.setVelocityX(350);
+      }
+
+      if (!this.gameStarted) {
+        this.ball.setX(this.player.x);
+
         if (this.cursors.space.isDown) {
           this.gameStarted = true;
           this.ball.setVelocityY(-200);
@@ -75,7 +140,7 @@ export default class GameScene extends Phaser.Scene {
     return (
       this.redBricks.countActive() +
         this.yellowBricks.countActive() +
-        this.blueBricks.countActive() ==
+        this.blueBricks.countActive() ===
       0
     );
   }
@@ -88,10 +153,12 @@ export default class GameScene extends Phaser.Scene {
     let player = this.physics.add.sprite(400, 600, "paddle");
     return player;
   }
+
   createBall() {
     let ball = this.physics.add.sprite(400, 565, "ball");
     return ball;
   }
+
   createBlueBricks() {
     let blueBricks = this.physics.add.group({
       key: "brick1",
