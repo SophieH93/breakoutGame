@@ -8,7 +8,7 @@ function App() {
         title={"Breakout"}
         width={800}
         height={640}
-        background={"#000"}
+        background={"#000000"}
       />
     </div>
   );
