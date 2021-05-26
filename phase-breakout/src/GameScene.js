@@ -187,7 +187,7 @@ export default class GameScene extends Phaser.Scene {
   createBlueBricks() {
     const blueBricks = this.physics.add.group({
       key: "brick1",
-      repeat: 9,
+      repeat: 12,
       immovable: true,
       setXY: { x: 80, y: 140, stepX: 70 },
     });
@@ -198,7 +198,7 @@ export default class GameScene extends Phaser.Scene {
   createYellowBricks() {
     const yellowBricks = this.physics.add.group({
       key: "brick2",
-      repeat: 9,
+      repeat: 12,
       immovable: true,
       setXY: { x: 80, y: 90, stepX: 70 },
     });
@@ -209,7 +209,7 @@ export default class GameScene extends Phaser.Scene {
   createRedBricks() {
     const redBricks = this.physics.add.group({
       key: "brick3",
-      repeat: 9,
+      repeat: 12,
       immovable: true,
       setXY: { x: 80, y: 40, stepX: 70 },
     });
