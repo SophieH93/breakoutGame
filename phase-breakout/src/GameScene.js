@@ -24,6 +24,14 @@ export default class GameScene extends Phaser.Scene {
     this.redBricks = this.createRedBricks();
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.player.setCollideWorldBounds(true);
+    this.player.setImmovable(true);
+
+    // Makes the ball bounce
+    this.ball.setCollideWorldBounds(true);
+    this.ball.setBounce(1, 1);
+    // Makes the ball fall off the bottom
+    this.physics.world.checkCollision.down = false;
 
     this.createOpeningText();
   }
