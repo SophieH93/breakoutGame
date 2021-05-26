@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 
 export default class GameScene extends Phaser.Scene {
+  openingText = Phaser.GameObjects.Text;
+
   constructor() {
     super("game-scene");
     this.gameStarted = false;
@@ -20,9 +22,52 @@ export default class GameScene extends Phaser.Scene {
     this.blueBricks = this.createBlueBricks();
     this.yellowBricks = this.createYellowBricks();
     this.redBricks = this.createRedBricks();
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.createOpeningText();
   }
 
-  update() {}
+  createOpeningText() {
+    this.openingText = this.add.text(
+      this.physics.world.bounds.width / 2,
+      this.physics.world.bounds.height / 2,
+
+      "Press SPACE to Start",
+      {
+        fontFamily: "Monaco, Courier, monospace",
+        fontSize: "50px",
+        fill: "#fff",
+      }
+    );
+    this.openingText.setOrigin(0.5);
+  }
+
+  update() {
+    if (this.isGameOver(this.physics.world)) {
+    } else if (this.isWon()) {
+    } else {
+      if (!this.gameStarted) {
+        this.player.body.setVelocityX(0);
+        if (this.cursors.space.isDown) {
+          this.gameStarted = true;
+          this.ball.setVelocityX(-200);
+        }
+      }
+    }
+  }
+
+  isWon() {
+    return (
+      this.redBricks.countActive() +
+        this.yellowBricks.countActive() +
+        this.blueBricks.countActive() ==
+      0
+    );
+  }
+
+  isGameOver(world) {
+    return this.ball.body.y > world.bounds.height;
+  }
 
   createPlayer() {
     let player = this.physics.add.sprite(400, 600, "paddle");
